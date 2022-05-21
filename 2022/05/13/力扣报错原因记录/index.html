@@ -16,7 +16,7 @@
 <meta property="og:description" content="要想做一个合格的coder，不仅要有灵活的头脑和旺盛的求知欲，细心和严谨也是必不可少的。平时刷题难免会一不小心犯下各种各样的错误，浪费时间和精力，因此希望通过记录这些错误，一方面减少查找时间，一方面也提醒自己养成良好的编程习惯。 Line 1034: Char 34: runtime error: addition of unsigned offset to 0x603000000010 over">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-05-13T02:47:23.897Z">
-<meta property="article:modified_time" content="2022-05-21T03:52:15.242Z">
+<meta property="article:modified_time" content="2022-05-21T08:07:43.852Z">
 <meta property="article:author" content="Flora Hu">
 <meta name="twitter:card" content="summary">
   
@@ -184,7 +184,8 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>要想做一个合格的coder，不仅要有灵活的头脑和旺盛的求知欲，细心和严谨也是必不可少的。<br>平时刷题难免会一不小心犯下各种各样的错误，浪费时间和精力，因此希望通过记录这些错误，一方面减少查找时间，一方面也提醒自己养成良好的编程习惯。</p>
-<p>Line 1034: Char 34: runtime error: addition of unsigned offset to 0x603000000010 overflowed to 0x602ffffffff8 (stl_vector.h)<br>来源：#494（目标和，动态规划）这种错误类型一看就是数组访问边界的问题，果然在代码里看到了for(int i &#x3D; 0;…)dp[i-1]… 头秃…</p>
+<p>Line 1034: Char 34: runtime error: addition of unsigned offset to 0x603000000010 overflowed to 0x602ffffffff8 (stl_vector.h)<br>来源：#494（目标和，动态规划）<br>这种错误类型一看就是数组访问边界的问题，果然在代码里看到了for(int i &#x3D; 0;…)dp[i-1]… 头秃…</p>
+<p>Line 1034: Char 9: runtime error: reference binding to null pointer of type ‘int’ (stl_vector.h)<br>来源：#238 （除自身外的乘积）<br>vector在未分配空间时不能像数组那样用下标访问！</p>
 
       
 
@@ -279,7 +280,7 @@
   
   
     <a href="/2022/05/11/Note-2%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%A0%91/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Note-2：二叉树</div>
+      <div class="article-nav-title">Note-2：二叉树：迷失在种满二叉树的递归森林</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -386,7 +387,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
     
     	<section class="tools-section tools-section-me" q-show="aboutme">
   	  	
-  	  		<div class="aboutme-wrap" id="js-aboutme">一个慢慢进步的C++学习者&lt;br&gt;&lt;br&gt;&lt;br&gt;非常业余的小提琴爱好者&lt;br&gt;&lt;br&gt;只做了一点微小的贡献&lt;br&gt;&lt;br&gt;谢谢大家</div>
+  	  		<div class="aboutme-wrap" id="js-aboutme">一个正在努力的C++学习者&lt;br&gt;&lt;br&gt;非常业余的小提琴爱好者&lt;br&gt;&lt;br&gt;&lt;br&gt;只要敢远飞&lt;br&gt;亦能自创我的搜神记</div>
   	  	
     	</section>
     
