@@ -183,9 +183,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>贴一个大佬笔记：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/find-all-anagrams-in-a-string/solution/hua-dong-chuang-kou-tong-yong-si-xiang-jie-jue-zi-/">https://leetcode.cn/problems/find-all-anagrams-in-a-string/solution/hua-dong-chuang-kou-tong-yong-si-xiang-jie-jue-zi-/</a><br>滑动窗口有一个模板：</p>
+        <p>滑动窗口是指根据情况移动窗口的起点终点，改变所选范围，并在过程中更新需要的值。<br>在此贴一个大佬笔记：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/find-all-anagrams-in-a-string/solution/hua-dong-chuang-kou-tong-yong-si-xiang-jie-jue-zi-/">https://leetcode.cn/problems/find-all-anagrams-in-a-string/solution/hua-dong-chuang-kou-tong-yong-si-xiang-jie-jue-zi-/</a><br>大佬给滑动窗口整理了一个模板：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">int left = 0, right = 0;</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> (right &lt; s.size()) &#123;</span><br><span class="line">    // 增大窗口</span><br><span class="line">    window.add(s[right]);</span><br><span class="line">    right++;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span> (window needs shrink) &#123;</span><br><span class="line">        // 缩小窗口</span><br><span class="line">        window.remove(s[left]);</span><br><span class="line">        left++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>因此关键就要考虑：扩大窗口时要做什么操作？什么时候开始缩小窗口？缩小窗口时要做什么操作？需要的结果要在扩大还是缩小窗口时更新？<br>滑动窗口的最大用处之一就是解决子串问题：</p>
+<p>因此关键就要考虑：扩大窗口时要做什么操作？什么时候开始缩小窗口？缩小窗口时要做什么操作？需要的结果要在扩大还是缩小窗口时更新？<br>滑动窗口可以在一个字符串中选取一部分，因此最大用处之一就是解决子串问题：</p>
         
       
 
