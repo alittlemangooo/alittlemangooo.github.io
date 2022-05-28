@@ -8,15 +8,15 @@
   <link rel="dns-prefetch" href="http://example.com">
   <title>Note-6：智能指针 | Flora&#39;s notes</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Playing myself">
+  <meta name="description" content="智能指针是C++11引入的新概念，用来弥补普通指针的不足。本篇简单写一下智能指针是干嘛的，为什么要弄个智能指针出来。新手，如有不足和纰漏还请指出。 内存的静态分配和动态分配指针是一个令人头疼的东西，但它作为C&#x2F;C++的特色，也正是它让程序员可以直接对内存进行操作。C++的内存分配分为静态和动态两种方式。静态分配：想一下定长数组，定义它的长度（空间）后这个值就不变了，由编译器负责，发生在编">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Note-6：智能指针">
 <meta property="og:url" content="http://example.com/2022/05/27/Note-6%EF%BC%9A%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/index.html">
 <meta property="og:site_name" content="Flora&#39;s notes">
-<meta property="og:description" content="Playing myself">
+<meta property="og:description" content="智能指针是C++11引入的新概念，用来弥补普通指针的不足。本篇简单写一下智能指针是干嘛的，为什么要弄个智能指针出来。新手，如有不足和纰漏还请指出。 内存的静态分配和动态分配指针是一个令人头疼的东西，但它作为C&#x2F;C++的特色，也正是它让程序员可以直接对内存进行操作。C++的内存分配分为静态和动态两种方式。静态分配：想一下定长数组，定义它的长度（空间）后这个值就不变了，由编译器负责，发生在编">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-05-27T01:35:13.462Z">
-<meta property="article:modified_time" content="2022-05-28T03:49:42.649Z">
+<meta property="article:modified_time" content="2022-05-28T10:02:35.029Z">
 <meta property="article:author" content="Flora Hu">
 <meta name="twitter:card" content="summary">
   
@@ -183,7 +183,26 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>智能指针是C++11引入的新概念，用来弥补普通指针的不足。本篇简单写一下智能指针是干嘛的，为什么要弄个智能指针出来。新手，如有不足和纰漏还请指出。</p>
+<h1 id="内存的静态分配和动态分配"><a href="#内存的静态分配和动态分配" class="headerlink" title="内存的静态分配和动态分配"></a>内存的静态分配和动态分配</h1><p>指针是一个令人头疼的东西，但它作为C&#x2F;C++的特色，也正是它让程序员可以直接对内存进行操作。<br>C++的内存分配分为静态和动态两种方式。<br>静态分配：想一下定长数组，定义它的长度（空间）后这个值就不变了，由编译器负责，发生在编译和链接阶段。<br>动态分配：就像链表可以随时增删，取决于实际输入的数据，动态分配就是按需分配，由程序员负责，发生在程序调入和执行阶段。<br>二者的区别主要是：（1）发生时间不同，如上；（2）空间不同：栈中两种分配方式都有，堆中只有动态分配。<br>那么栈中的动态分配和堆中的又有什么区别呢？<br>栈中用alloca函数分配，编译器自动释放，而堆中用malloc等函数分配，free函数释放。</p>
+<span id="more"></span>
+<p>一般很少看到alloca函数，因为在栈申请内存有它的局限：因为自动释放，所以申请的内存只能存在于函数的 &#96;&#96;堆栈帧”  或上下文中；此外它没有可移植性，在没有传统对战的机器上难以实现。<br>堆中可以自己用一对new&#x2F;delete运算符实现申请释放，自由，但一个缺点是很容易造成二者的不匹配：忘记delete，造成内存泄漏；在还有指针引用内存的时候就delete了，造成指针引用非法内存，沦为悬空指针。</p>
+<h1 id="智能指针"><a href="#智能指针" class="headerlink" title="智能指针"></a>智能指针</h1><p>智能指针就是为了解决这个问题。它区别于普通指针的地方在于可以自动释放所指对象。目前，标准库提出了三种智能指针，定义在memory头文件。</p>
+<h2 id="shared-ptr"><a href="#shared-ptr" class="headerlink" title="shared_ptr"></a>shared_ptr</h2><p>这是比较常用的一种智能指针，有两种定义方式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">std::shared_ptr&lt;int&gt; p1;             //不传入任何实参</span><br><span class="line">std::shared_ptr&lt;int&gt; p2(nullptr);    //传入空指针 nullptr // 初始计数值为0</span><br></pre></td></tr></table></figure>
+<p>或者用make_shared函数分配内存，也很安全：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">shared_ptr&lt;int&gt; p3 = make_shared&lt;int&gt;(42);</span><br><span class="line">shared_ptr&lt;string&gt; p4 = make_shared&lt;string&gt;(10,<span class="string">&#x27;9&#x27;</span>);</span><br><span class="line">shared_ptr&lt;int&gt; p5 = make_shared&lt;int&gt;();</span><br></pre></td></tr></table></figure>
+<p>注意只能指针是一个模板类，不能直接用指针赋值。</p>
+<h3 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h3><p>每个shared_ptr都自带一个counter，拷贝时引用计数+1，赋新值指向新地址或销毁（离开作用域）时计数-1，当计数为0时，shared_ptr可以通过析构函数自动释放自己管理的对象。这个分计数也牺牲了一定性能为代价。<br>此外，shared_ptr还有一个指向共享资源的指针。<br>因此，对shared_ptr拷贝时涉及两个成员的复制，它们不能同时发生，为了避免多线程的竞态条件，需要加锁保护。<br>其它用法和普通指针区别不大。</p>
+<h3 id="适用场景："><a href="#适用场景：" class="headerlink" title="适用场景："></a>适用场景：</h3><p>多个使用者共同使用一个对象并缺少一个拥有者；某个对象的赋值操作很费时，用指针代替对象本身；要把指针存入标准库容器（如果容器中保存的是普通指针，在清空某个容器时，先要释放容器中指针所指向的资源，然后才能清空这些指针本身，使用智能指针则只需要清空它们）</p>
+<h3 id="陷阱：循环引用"><a href="#陷阱：循环引用" class="headerlink" title="陷阱：循环引用"></a>陷阱：循环引用</h3><p>A-&gt;B,B-&gt;A，例如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#include &lt;iostream&gt;</span></span><br><span class="line"><span class="comment">#include &lt;memory&gt;</span></span><br><span class="line">using namespace std;</span><br><span class="line">class Son;</span><br><span class="line">class Father &#123;</span><br><span class="line">public:</span><br><span class="line">    shared_ptr&lt;Son&gt; son_;</span><br><span class="line">    <span class="function"><span class="title">Father</span></span>() &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">__FUNCTION__ &lt;&lt; endl;</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">    ~Father() &#123;</span></span><br><span class="line"><span class="string">        cout &lt;&lt; __FUNCTION__</span> &lt;&lt; <span class="string">endl;</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">&#125;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">class Son &#123;</span></span><br><span class="line"><span class="string">public:</span></span><br><span class="line"><span class="string">    shared_ptr&lt;Father&gt; father_;</span></span><br><span class="line"><span class="string">    Son() &#123;</span></span><br><span class="line"><span class="string">        cout &lt;&lt; __FUNCTION__ &lt;&lt; endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    ~<span class="function"><span class="title">Son</span></span>() &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">__FUNCTION__ &lt;&lt; endl;</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">&#125;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">int main()</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">    auto son = make_shared&lt;Son&gt;();</span></span><br><span class="line"><span class="string">    auto father = make_shared&lt;Father&gt;();</span></span><br><span class="line"><span class="string">    son-&gt;father_ = father;</span></span><br><span class="line"><span class="string">    father-&gt;son_ = son;</span></span><br><span class="line"><span class="string">    cout &lt;&lt; &quot;son: &quot; &lt;&lt; son.use_count() &lt;&lt; endl;</span></span><br><span class="line"><span class="string">    cout &lt;&lt; &quot;father: &quot; &lt;&lt; father.use_count() &lt;&lt; endl;</span></span><br><span class="line"><span class="string">    return 0;</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>两个智能指针的引用计数都是2，只执行了Son和Father的构造函数，没有执行析构函数，造成了内存泄漏。<br>因此设计了弱指针解决这个问题：</p>
+<h3 id="weak-ptr"><a href="#weak-ptr" class="headerlink" title="weak_ptr"></a>weak_ptr</h3><p>弱在哪：如果shared_ptr A被赋值给shared_ptr B时，A的引用计数加1；shared_ptr A被赋值给weak_ptr C时，A的引用计数不变。<br>对于上面的代码，把Son的指针定义为weak_ptr，这样就可以调用shared_ptr的析构函数，随后也就调用了weak_ptr的析构函数。</p>
+<h2 id="unique-ptr"><a href="#unique-ptr" class="headerlink" title="unique_ptr"></a>unique_ptr</h2><p>只能有一个unique_ptr指向一个对象，”独有“，因此不能用它进行拷贝或赋值。<br>相比shared_ptr，它不用计数，使得性能也会好一点。</p>
+<h2 id="auto-ptr"><a href="#auto-ptr" class="headerlink" title="auto_ptr"></a>auto_ptr</h2><p>智能指针的始祖。用的少就偷懒不写了:D</p>
+<h1 id="一点感想"><a href="#一点感想" class="headerlink" title="一点感想"></a>一点感想</h1><p>感觉智能指针更像是一种”建议和选择“，毕竟它设计的初衷就是弥补传统内存分配的麻烦和可能存在的坑，替我们程序员做内存管理，所以不存在一定要用它的场合。而且智能指针比普通指针的构造要复杂，更占空间，效率也更低，所以要在性能和稳定性之间做权衡，像之前做服务器项目的时候就适合牺牲其它性能用智能指针。</p>
+
       
 
       
