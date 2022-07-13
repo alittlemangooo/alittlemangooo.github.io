@@ -6,15 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Flora&#39;s notes</title>
+  <title>Note-8:Singleton | Flora&#39;s notes</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Playing myself">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Flora&#39;s notes">
-<meta property="og:url" content="http://example.com/index.html">
+  <meta name="description" content="最近做项目遇到了单例模式，本篇来简单做个笔记。singleton直译是单身人士&#x2F;独生子女的意思，这里用来表示一个类只有一个实例，并提供一个访问它的全局访问点，让这个唯一的实例被所有程序模块共享。 为什么要有单例模式？一大原因是线程安全的需要。线程安全是指多线程运行时结果和单线程一样，不会因为对资源的抢占而造成相互干扰。例如，一个系统中可以存在多个打印任务，但是只能有一个正在工作的任务；一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Note-8:Singleton">
+<meta property="og:url" content="http://example.com/2022/07/09/Note-8-Singleton/index.html">
 <meta property="og:site_name" content="Flora&#39;s notes">
-<meta property="og:description" content="Playing myself">
+<meta property="og:description" content="最近做项目遇到了单例模式，本篇来简单做个笔记。singleton直译是单身人士&#x2F;独生子女的意思，这里用来表示一个类只有一个实例，并提供一个访问它的全局访问点，让这个唯一的实例被所有程序模块共享。 为什么要有单例模式？一大原因是线程安全的需要。线程安全是指多线程运行时结果和单线程一样，不会因为对资源的抢占而造成相互干扰。例如，一个系统中可以存在多个打印任务，但是只能有一个正在工作的任务；一">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-07-09T11:03:19.325Z">
+<meta property="article:modified_time" content="2022-07-13T13:25:43.475Z">
 <meta property="article:author" content="Flora Hu">
 <meta name="twitter:card" content="summary">
   
@@ -161,16 +163,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-Note-8-Singleton" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-Note-8-Singleton" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/07/09/Note-8-Singleton/">Note-8:Singleton</a>
+    <h1 class="article-title" itemprop="name">
+      Note-8:Singleton
     </h1>
   
 
@@ -186,8 +186,13 @@
         <p>最近做项目遇到了单例模式，本篇来简单做个笔记。<br>singleton直译是单身人士&#x2F;独生子女的意思，这里用来表示一个类只有一个实例，并提供一个访问它的全局访问点，让这个唯一的实例被所有程序模块共享。</p>
 <h1 id="为什么要有单例模式？"><a href="#为什么要有单例模式？" class="headerlink" title="为什么要有单例模式？"></a>为什么要有单例模式？</h1><p>一大原因是线程安全的需要。线程安全是指多线程运行时结果和单线程一样，不会因为对资源的抢占而造成相互干扰。例如，一个系统中可以存在多个打印任务，但是只能有一个正在工作的任务；一个系统只能有一个窗口管理器或文件系统；一个系统只能有一个计时工具或ID(序号)生成器。如在Windows中就只能打开一个任务管理器。如果不使用机制对窗口对象进行唯一化，将弹出多个窗口，如果这些窗口显示的内容完全一致，则是重复对象，浪费内存资源；如果这些窗口显示的内容不一致，则意味着在某一瞬间系统有多个状态，与实际不符，也会给用户带来误解，不知道哪一个才是真实的状态。因此有时确保系统中某个对象的唯一性即一个类只能有一个实例非常重要。</p>
 <h1 id="单例模式的优缺点"><a href="#单例模式的优缺点" class="headerlink" title="单例模式的优缺点"></a>单例模式的优缺点</h1><p>优点：（1）只有一个实例，因此内存开支更小，尤其当一个对象需要频繁创建销毁（2）避免多个实例同时对一个资源操作（3）可以在系统设置全局的访问点，可以用一个单例类负责所有数据表的映射处理等；<br>缺点：（1）只有一个实例，所以几乎不能扩展（2）单例类的职责过多过重</p>
-<h1 id="常见的两种分类"><a href="#常见的两种分类" class="headerlink" title="常见的两种分类"></a>常见的两种分类</h1><h2 id="懒汉"><a href="#懒汉" class="headerlink" title="懒汉"></a>懒汉</h2>
-        
+<h1 id="常见的两种分类"><a href="#常见的两种分类" class="headerlink" title="常见的两种分类"></a>常见的两种分类</h1><h2 id="懒汉"><a href="#懒汉" class="headerlink" title="懒汉"></a>懒汉</h2><span id="more"></span>
+<p>懒：不得万不得已不去实例化类，也就是第一次使用实例对象时才去创建对象。这种方法是线程不安全的，可以通过加锁解决。</p>
+<h2 id="饿汉"><a href="#饿汉" class="headerlink" title="饿汉"></a>饿汉</h2><p>饿：迫不及待，定义单例类的时候就实例化。因为对象创建在类外，所以是线程安全的。</p>
+<h1 id="单例类的实现"><a href="#单例类的实现" class="headerlink" title="单例类的实现"></a>单例类的实现</h1><p>单例类在静态成员函数中隐藏创建实例的操作，习惯上该成员函数称为Instance()或getInstance()，返回这个唯一实例的指针。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class Singleton &#123;</span><br><span class="line">public:</span><br><span class="line">  static Singleton&amp; <span class="function"><span class="title">getInstance</span></span>()&#123;</span><br><span class="line">     static Singleton instance;</span><br><span class="line">       <span class="built_in">return</span> instance;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>以项目为例，项目中要设计内存池来进行对象的内存管理，因为一个就够了，所以把内存池类定为一个单例类。</p>
+
       
 
       
@@ -209,16 +214,75 @@
 
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/07/09/Note-8-Singleton/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/07/09/Note-8-Singleton/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2022/05/27/Note-7%EF%BC%9A%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%EF%BC%9A%E8%BF%99%E6%AC%A1%E4%B8%80%E5%AE%9A%E4%BC%9A%E7%94%A8/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Note-7：滑动窗口</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -238,692 +302,14 @@
 
 
 
-
   
-    <article id="post-Note-7：滑动窗口：这次一定会用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/05/27/Note-7%EF%BC%9A%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%EF%BC%9A%E8%BF%99%E6%AC%A1%E4%B8%80%E5%AE%9A%E4%BC%9A%E7%94%A8/">Note-7：滑动窗口</a>
-    </h1>
   
 
-        
-        <a href="/2022/05/27/Note-7%EF%BC%9A%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%EF%BC%9A%E8%BF%99%E6%AC%A1%E4%B8%80%E5%AE%9A%E4%BC%9A%E7%94%A8/" class="archive-article-date">
-  	<time datetime="2022-05-27T08:51:03.395Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-27</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>滑动窗口是指根据情况移动窗口的起点终点，改变所选范围，并在过程中更新需要的值。<br>在此贴一个大佬笔记：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/find-all-anagrams-in-a-string/solution/hua-dong-chuang-kou-tong-yong-si-xiang-jie-jue-zi-/">https://leetcode.cn/problems/find-all-anagrams-in-a-string/solution/hua-dong-chuang-kou-tong-yong-si-xiang-jie-jue-zi-/</a><br>大佬给滑动窗口整理了一个模板：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">int left = 0, right = 0;</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> (right &lt; s.size()) &#123;</span><br><span class="line">    // 增大窗口</span><br><span class="line">    window.add(s[right]);</span><br><span class="line">    right++;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span> (window needs shrink) &#123;</span><br><span class="line">        // 缩小窗口</span><br><span class="line">        window.remove(s[left]);</span><br><span class="line">        left++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>因此关键就要考虑：扩大窗口时要做什么操作？什么时候开始缩小窗口？缩小窗口时要做什么操作？需要的结果要在扩大还是缩小窗口时更新？<br>滑动窗口可以在一个字符串中选取一部分，因此最大用处之一就是解决子串问题：</p>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/算法//" class="article-tag-list-link color3">算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/05/27/Note-7%EF%BC%9A%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%EF%BC%9A%E8%BF%99%E6%AC%A1%E4%B8%80%E5%AE%9A%E4%BC%9A%E7%94%A8/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Note-6：智能指针" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/05/27/Note-6%EF%BC%9A%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/">Note-6：智能指针</a>
-    </h1>
   
 
-        
-        <a href="/2022/05/27/Note-6%EF%BC%9A%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" class="archive-article-date">
-  	<time datetime="2022-05-27T01:35:13.462Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-27</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>智能指针是C++11引入的新概念，用来弥补普通指针的不足。本篇简单写一下智能指针是干嘛的，为什么要弄个智能指针出来。新手，如有不足和纰漏还请指出。</p>
-<h1 id="内存的静态分配和动态分配"><a href="#内存的静态分配和动态分配" class="headerlink" title="内存的静态分配和动态分配"></a>内存的静态分配和动态分配</h1><p>指针是一个令人头疼的东西，但它作为C&#x2F;C++的特色，也正是它让程序员可以直接对内存进行操作。<br>C++的内存分配分为静态和动态两种方式。<br>静态分配：想一下定长数组，定义它的长度（空间）后这个值就不变了，由编译器负责，发生在编译和链接阶段。<br>动态分配：就像链表可以随时增删，取决于实际输入的数据，动态分配就是按需分配，由程序员负责，发生在程序调入和执行阶段。<br>二者的区别主要是：（1）发生时间不同，如上；（2）空间不同：栈中两种分配方式都有，堆中只有动态分配。<br>那么栈中的动态分配和堆中的又有什么区别呢？<br>栈中用alloca函数分配，编译器自动释放，而堆中用malloc等函数分配，free函数释放。</p>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/C-基础//" class="article-tag-list-link color1">C++基础</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/05/27/Note-6%EF%BC%9A%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Note-5-select" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/05/22/Note-5-select/">Note-5:select</a>
-    </h1>
   
 
-        
-        <a href="/2022/05/22/Note-5-select/" class="archive-article-date">
-  	<time datetime="2022-05-22T13:34:32.528Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-22</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/05/22/Note-5-select/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Note-4-链表：是否还有更优解法？" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/05/21/Note-4-%E9%93%BE%E8%A1%A8%EF%BC%9A%E6%98%AF%E5%90%A6%E8%BF%98%E6%9C%89%E6%9B%B4%E4%BC%98%E8%A7%A3%E6%B3%95%EF%BC%9F/">Note-4:链表：是否还有更优解法？</a>
-    </h1>
-  
-
-        
-        <a href="/2022/05/21/Note-4-%E9%93%BE%E8%A1%A8%EF%BC%9A%E6%98%AF%E5%90%A6%E8%BF%98%E6%9C%89%E6%9B%B4%E4%BC%98%E8%A7%A3%E6%B3%95%EF%BC%9F/" class="archive-article-date">
-  	<time datetime="2022-05-21T06:52:33.265Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-21</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>做链表题的时候，经常看到有follow up问，能否用更低的时间复杂度完成？（毕竟遍历一遍链表就O(n)了）<br>本篇笔记就来整理一下我遇到过的链表更优解法，感受一下更优解法背后的智慧。<br>#234.是否是回文链表<br>赞美一下官解给的ppt，非常详细易懂！<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/palindrome-linked-list/solution/hui-wen-lian-biao-by-leetcode-solution/">https://leetcode.cn/problems/palindrome-linked-list/solution/hui-wen-lian-biao-by-leetcode-solution/</a><br>递归处理链表，根据栈先入后出的特性可以实现普通做法所不能实现的倒序遍历链表，这样这道题就类似于双指针判断数组是否对称，真的很妙。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    ListNode* left;</span><br><span class="line">    bool recursion(ListNode* right)&#123;</span><br><span class="line">        <span class="keyword">if</span>(right == nullptr)&#123;//递归终止/base <span class="keyword">case</span></span><br><span class="line">            <span class="built_in">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(recursion(right -&gt; next) == <span class="literal">false</span>)&#123;</span><br><span class="line">            <span class="built_in">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(left -&gt; val != right -&gt; val)&#123;</span><br><span class="line">            <span class="built_in">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        left = left -&gt; next;</span><br><span class="line">        <span class="built_in">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    bool isPalindrome(ListNode* <span class="built_in">head</span>) &#123;</span><br><span class="line">        left = <span class="built_in">head</span>;</span><br><span class="line">        <span class="built_in">return</span> recursion(<span class="built_in">head</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>#剑指6.从尾到头打印链表<br>捕获关键词！想到递归：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    void recursion(ListNode* curr,vector&lt;int&gt;&amp; ret)&#123;</span><br><span class="line">        <span class="keyword">if</span>(curr== nullptr)&#123;</span><br><span class="line">            <span class="built_in">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        recursion(curr -&gt; next,ret);</span><br><span class="line">        ret.push_back(curr -&gt; val);</span><br><span class="line">    &#125;</span><br><span class="line">    vector&lt;int&gt; reversePrint(ListNode* <span class="built_in">head</span>)&#123;</span><br><span class="line">        vector&lt;int&gt; ret;</span><br><span class="line">        ListNode* curr = <span class="built_in">head</span>;</span><br><span class="line">        recursion(curr,ret);</span><br><span class="line">        <span class="built_in">return</span> ret;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/数据结构//" class="article-tag-list-link color5">数据结构</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/05/21/Note-4-%E9%93%BE%E8%A1%A8%EF%BC%9A%E6%98%AF%E5%90%A6%E8%BF%98%E6%9C%89%E6%9B%B4%E4%BC%98%E8%A7%A3%E6%B3%95%EF%BC%9F/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Note-3-二分法：从入门到入土到入门" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/05/21/Note-3-%E4%BA%8C%E5%88%86%E6%B3%95%EF%BC%9A%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%85%A5%E5%9C%9F%E5%88%B0%E5%85%A5%E9%97%A8/">Note-3:二分法：从入门到入土到入门</a>
-    </h1>
-  
-
-        
-        <a href="/2022/05/21/Note-3-%E4%BA%8C%E5%88%86%E6%B3%95%EF%BC%9A%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%85%A5%E5%9C%9F%E5%88%B0%E5%85%A5%E9%97%A8/" class="archive-article-date">
-  	<time datetime="2022-05-21T02:48:37.156Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-21</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>二分法之所以成为历史遗留问题，究其原因还是学它的时候我尚在上古时期的混沌阶段，觉得它看起来简单（有的也不简单）写起来难，更别说有的时候不提logn根本想不到用二分。然而人终究要克服自己的局限和恐惧，本篇文章就试图整理一些题目来消除我对它的负面情绪，争取早日做二分法的朋友:)<br>二分法的优势主要包括（1）不需要额外空间（2）遍历长度为n的数组，复杂度可以降为O(logn)。二分法大多与单调性有关，所以看到单调&#x2F;O(logn)等描述就可以考虑二分了，看不到就..凭经验吧。</p>
-<h2 id="704-【梦开始的地方】基本二分查找"><a href="#704-【梦开始的地方】基本二分查找" class="headerlink" title="704. 【梦开始的地方】基本二分查找"></a>704. 【梦开始的地方】基本二分查找</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int search(vector&lt;int&gt;&amp; nums, int target) &#123;</span><br><span class="line">        int left = 0,right = nums.size() - 1;</span><br><span class="line">        <span class="keyword">while</span>(left &lt;= right)&#123;</span><br><span class="line">            int mid = left + (right - left) / 2;</span><br><span class="line">            <span class="keyword">if</span>(nums[mid] == target)&#123;</span><br><span class="line">                <span class="built_in">return</span> mid;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(nums[mid] &gt; target)&#123;</span><br><span class="line">                right = mid - 1;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                left = mid + 1;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">return</span> -1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/算法//" class="article-tag-list-link color3">算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/05/21/Note-3-%E4%BA%8C%E5%88%86%E6%B3%95%EF%BC%9A%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%85%A5%E5%9C%9F%E5%88%B0%E5%85%A5%E9%97%A8/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-力扣报错原因记录" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/05/13/%E5%8A%9B%E6%89%A3%E6%8A%A5%E9%94%99%E5%8E%9F%E5%9B%A0%E8%AE%B0%E5%BD%95/">leetcode报错原因记录【持续更新】</a>
-    </h1>
-  
-
-        
-        <a href="/2022/05/13/%E5%8A%9B%E6%89%A3%E6%8A%A5%E9%94%99%E5%8E%9F%E5%9B%A0%E8%AE%B0%E5%BD%95/" class="archive-article-date">
-  	<time datetime="2022-05-13T02:47:23.897Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-13</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>要想做一个合格的coder，不仅要有灵活的头脑和旺盛的求知欲，细心和严谨也是必不可少的。<br>平时刷题难免会一不小心犯下各种各样的错误，浪费时间和精力，因此希望通过记录这些错误，一方面减少查找时间，一方面也提醒自己养成良好的编程习惯。</p>
-<p>Line 1034: Char 34: runtime error: addition of unsigned offset to 0x603000000010 overflowed to 0x602ffffffff8 (stl_vector.h)<br>来源：#494（目标和，动态规划）<br>这种错误类型一看就是数组访问边界的问题，果然在代码里看到了for(int i &#x3D; 0;…)dp[i-1]… 头秃…</p>
-<p>Line 1034: Char 9: runtime error: reference binding to null pointer of type ‘int’ (stl_vector.h)<br>来源：#238 （除自身外的乘积）<br>vector在未分配空间时不能像数组那样用下标访问！</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/经验//" class="article-tag-list-link color3">经验</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/05/13/%E5%8A%9B%E6%89%A3%E6%8A%A5%E9%94%99%E5%8E%9F%E5%9B%A0%E8%AE%B0%E5%BD%95/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Note-2：二叉树" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/05/11/Note-2%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%A0%91/">Note-2：二叉树：迷失在种满二叉树的递归森林</a>
-    </h1>
-  
-
-        
-        <a href="/2022/05/11/Note-2%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%A0%91/" class="archive-article-date">
-  	<time datetime="2022-05-11T12:42:17.924Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-11</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>二叉树作为经典数据结构之一，占了leetCode不小的篇幅，一刷的时候一度让我很头疼。<br>二叉树与递归有千丝万缕的联系，本篇博客来总结一些二叉树的题，加深一下对递归的理解。</p>
-<h1 id="迭代遍历"><a href="#迭代遍历" class="headerlink" title="迭代遍历"></a>迭代遍历</h1><p>递归的本质是对函数的压栈弹栈，因此我们也可以直接用栈来模拟对二叉树的遍历。</p>
-<h2 id="94-中序遍历"><a href="#94-中序遍历" class="headerlink" title="94. 中序遍历"></a>94. 中序遍历</h2><p>同款还有：</p>
-<h2 id="530-BST中的最小绝对差"><a href="#530-BST中的最小绝对差" class="headerlink" title="530. BST中的最小绝对差"></a>530. BST中的最小绝对差</h2><h1 id="后序遍历"><a href="#后序遍历" class="headerlink" title="后序遍历"></a>后序遍历</h1><p>相比前序和中序，对后序遍历似乎有点生疏。后序遍历可以实现从底往上搜索，十分有用。</p>
-<h2 id="110-判断是否为平衡二叉树"><a href="#110-判断是否为平衡二叉树" class="headerlink" title="110. 判断是否为平衡二叉树"></a>110. 判断是否为平衡二叉树</h2><p>从底向上，求每个遍历到的节点是否为平衡二叉树（求左右子树深度，左右子树是否平衡）</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int helper(TreeNode* root)&#123;</span><br><span class="line">        <span class="keyword">if</span>(root == nullptr)&#123;</span><br><span class="line">            <span class="built_in">return</span> 0;</span><br><span class="line">        &#125;</span><br><span class="line">        int leftDepth = helper(root -&gt; left);//左</span><br><span class="line">        int rightDepth = helper(root -&gt; right);//右</span><br><span class="line">        <span class="keyword">if</span>(abs(leftDepth - rightDepth) &gt; 1 || leftDepth == -1 || rightDepth == -1)&#123;//到根节点处理</span><br><span class="line">            <span class="built_in">return</span> -1;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">return</span> max(leftDepth,rightDepth) + 1;</span><br><span class="line">    &#125;</span><br><span class="line">    bool isBalanced(TreeNode* root) &#123;</span><br><span class="line">        <span class="built_in">return</span> helper(root) != -1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h2 id="236-二叉树的最低公共祖先"><a href="#236-二叉树的最低公共祖先" class="headerlink" title="236. 二叉树的最低公共祖先"></a>236. 二叉树的最低公共祖先</h2><p>最低二字表明遍历二叉树的顺序应当是从下往上，就对应了后序遍历。如果遍历到一个节点左右子树分别出现了p&#x2F;q，说明它是最低公共祖先。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) &#123;</span><br><span class="line">        <span class="keyword">if</span>(root == p || root == q || root == nullptr)&#123;</span><br><span class="line">            <span class="built_in">return</span> root;</span><br><span class="line">        &#125;</span><br><span class="line">        TreeNode* left = lowestCommonAncestor(root -&gt; left,p,q);//左</span><br><span class="line">        TreeNode* right = lowestCommonAncestor(root -&gt; right,p,q);//右</span><br><span class="line">        <span class="keyword">if</span>(left != nullptr &amp;&amp; right != nullptr)&#123;</span><br><span class="line">            <span class="built_in">return</span> root;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(left == nullptr &amp;&amp; right != nullptr)&#123;</span><br><span class="line">            <span class="built_in">return</span> right;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(left != nullptr)&#123;</span><br><span class="line">            <span class="built_in">return</span> left;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">return</span> nullptr;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h2 id="337-打家劫舍"><a href="#337-打家劫舍" class="headerlink" title="337.打家劫舍"></a>337.打家劫舍</h2><p>这是一道开了眼了的树形DP..<br>对于每个节点，有选它和不选它两种选择，选它意味着必须要跳过子节点看孙子节点，不选它意味着【可以】看子节点。分析到这，动态规划的特征就已经比较明显了…<br>选遍历方式。上面节点的值要由下面节点的值推导得到，所以从下往上遍历-&gt;后序。<br>注意这题有个坑，直接递归会在树较大的时候超时，原因在于一个节点的子节点已经作为更上一层节点的孙子节点被计算过了，因此设了一个map来保存节点和到它为止能获得的最大值。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    unordered_map&lt;TreeNode*,int&gt; sums;//记录计算过的结果</span><br><span class="line">    int rob(TreeNode* root) &#123;</span><br><span class="line">        <span class="keyword">if</span>(root == nullptr)&#123;</span><br><span class="line">            <span class="built_in">return</span> 0;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(root -&gt; left == nullptr &amp;&amp; root -&gt; right == nullptr)&#123;</span><br><span class="line">            <span class="built_in">return</span> root -&gt; val;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(sums.count(root))&#123;//直接返回，避免重复计算</span><br><span class="line">            <span class="built_in">return</span> sums[root];</span><br><span class="line">        &#125;</span><br><span class="line">        int ret1 = root -&gt; val;//1.选择该节点，只能再选左右子节点的左右子节点（孙子节点）</span><br><span class="line">        <span class="keyword">if</span>(root -&gt; left)&#123;</span><br><span class="line">            ret1 += (rob(root -&gt; left -&gt; left) + rob(root -&gt; left -&gt; right));//左</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(root -&gt; right)&#123;</span><br><span class="line">            ret1 += (rob(root -&gt; right -&gt; left) + rob(root -&gt; right -&gt; right));//右</span><br><span class="line">        &#125;</span><br><span class="line">        int ret2 = rob(root -&gt; left) + rob(root -&gt; right);//2.不选该节点，考虑它的左右子节点</span><br><span class="line">        sums[root] = max(ret1,ret2);//根：更新map</span><br><span class="line">        <span class="built_in">return</span> sums[root];</span><br><span class="line">    &#125;  </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>别再偷了，心累….</p>
-<p>插播一条，用后序遍历二叉树的思想会非常好理解归并排序：</p>
-<h2 id="148-链表排序"><a href="#148-链表排序" class="headerlink" title="148. 链表排序"></a>148. 链表排序</h2><p>依次遍历左子树，右子树，处理根节点（合并左子链表和右子链表）</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    ListNode* divide(ListNode* beg,ListNode* end)&#123;</span><br><span class="line">        <span class="keyword">if</span>(beg == nullptr)&#123;</span><br><span class="line">            <span class="built_in">return</span> beg;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(beg -&gt; next == end)&#123;</span><br><span class="line">            beg -&gt; next = nullptr;</span><br><span class="line">            <span class="built_in">return</span> beg;</span><br><span class="line">        &#125;</span><br><span class="line">        ListNode* fast = beg,*slow = beg;</span><br><span class="line">        <span class="keyword">while</span>(fast != end)&#123;</span><br><span class="line">            fast = fast -&gt; next;</span><br><span class="line">            slow = slow -&gt; next;</span><br><span class="line">            <span class="keyword">if</span>(fast != end)&#123;</span><br><span class="line">                fast = fast -&gt; next;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        ListNode* mid = slow;</span><br><span class="line">        ListNode* list1 = divide(beg,mid);</span><br><span class="line">        ListNode* list2 = divide(mid,end);</span><br><span class="line">        ListNode* sorted = merge(list1,list2);</span><br><span class="line">        <span class="built_in">return</span> sorted;</span><br><span class="line">    &#125;</span><br><span class="line">    ListNode* merge(ListNode* list1,ListNode* list2)&#123;</span><br><span class="line">        ListNode* dummy = new ListNode(-1);</span><br><span class="line">        ListNode* curr = dummy;</span><br><span class="line">        ListNode* ptr1 = list1,*ptr2 = list2;</span><br><span class="line">        <span class="keyword">while</span>(ptr1 &amp;&amp; ptr2)&#123;</span><br><span class="line">            <span class="keyword">if</span>(ptr1 -&gt; val &lt;= ptr2 -&gt; val)&#123;</span><br><span class="line">                curr -&gt; next = ptr1;</span><br><span class="line">                ptr1 = ptr1 -&gt; next;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                curr -&gt; next = ptr2;</span><br><span class="line">                ptr2 = ptr2 -&gt; next;</span><br><span class="line">            &#125;</span><br><span class="line">            curr = curr -&gt; next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(ptr1)&#123;</span><br><span class="line">            curr -&gt; next = ptr1;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            curr -&gt; next = ptr2;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">return</span> dummy -&gt; next;</span><br><span class="line">    &#125;</span><br><span class="line">    ListNode* sortList(ListNode* <span class="built_in">head</span>) &#123;</span><br><span class="line">        <span class="built_in">return</span> divide(<span class="built_in">head</span>,nullptr);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h1 id="二叉树构造"><a href="#二叉树构造" class="headerlink" title="二叉树构造"></a>二叉树构造</h1><h2 id="105-从前序和中序遍历结果重建二叉树"><a href="#105-从前序和中序遍历结果重建二叉树" class="headerlink" title="105. 从前序和中序遍历结果重建二叉树"></a>105. 从前序和中序遍历结果重建二叉树</h2><p>前序：根-左-右，中序：左-根-右，因此前序数组的起点就是当前的根节点，在中序数组定位这个根节点，可以找到它的左右子树范围，又可以把中序数组切割成左右子树两个区间，递归地去构造左右子树。<br>这道题确定区间端点还是有点麻烦的，一不留神就heap-buffer-overflow…了，要时刻注意区间开闭的一致性。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    TreeNode* traversal(vector&lt;int&gt;&amp; preorder,int preBeg,int preEnd,vector&lt;int&gt;&amp; inorder,int inBeg,int inEnd)&#123;</span><br><span class="line">        <span class="keyword">if</span>(preBeg &gt; preEnd)&#123;</span><br><span class="line">            <span class="built_in">return</span> nullptr; </span><br><span class="line">        &#125;</span><br><span class="line">        int val = preorder[preBeg];</span><br><span class="line">        TreeNode* root = new TreeNode(val);</span><br><span class="line">        int <span class="built_in">cut</span> = 0;</span><br><span class="line">        <span class="keyword">for</span>(;<span class="built_in">cut</span> &lt; inorder.size(); <span class="built_in">cut</span>++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(inorder[<span class="built_in">cut</span>] == val)&#123;</span><br><span class="line">                <span class="built_in">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        int inLeftBeg = inBeg;</span><br><span class="line">        int inLeftEnd = <span class="built_in">cut</span> - 1;</span><br><span class="line">        int inRightBeg = <span class="built_in">cut</span> + 1;</span><br><span class="line">        int inRightEnd = inEnd;</span><br><span class="line">        int preLeftBeg = preBeg + 1;</span><br><span class="line">        int preLeftEnd = preBeg - inBeg + <span class="built_in">cut</span>;</span><br><span class="line">        int preRightBeg = preLeftEnd + 1;</span><br><span class="line">        int preRightEnd = preEnd;</span><br><span class="line">        root -&gt; left = traversal(preorder,preLeftBeg,preLeftEnd,inorder,inLeftBeg,inLeftEnd);</span><br><span class="line">        root -&gt; right = traversal(preorder,preRightBeg,preRightEnd,inorder,inRightBeg,inRightEnd);</span><br><span class="line">        <span class="built_in">return</span> root;</span><br><span class="line">    &#125;</span><br><span class="line">    TreeNode* buildTree(vector&lt;int&gt;&amp; preorder, vector&lt;int&gt;&amp; inorder) &#123;</span><br><span class="line">        <span class="built_in">return</span> traversal(preorder,0,preorder.size() - 1,inorder,0,inorder.size() - 1);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h1 id="双重递归"><a href="#双重递归" class="headerlink" title="双重递归"></a>双重递归</h1><h2 id="437-路径总和"><a href="#437-路径总和" class="headerlink" title="437.路径总和"></a>437.路径总和</h2><p>这个双重递归看着倒挺新鲜的…<br>因为是从上往下找路径，所以要用前序遍历。和以往的路径总和相比，这道题的起点和终点都不限于根节点和叶子节点，对于每个节点都要向下查找有几条路径。因此这道题要使用双重递归来遍历这棵树：第一层递归用于定位路径的起点，第二层递归则是查找以此为起点的路径个数，到空节点时停止递归。<br>至于long long则完全是为了最后一个用例…</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    long long rootSum(TreeNode* root, long long targetSum)&#123;</span><br><span class="line">        <span class="keyword">if</span>(root == nullptr)&#123;//节点有负数，因此要遍历到空节点停止</span><br><span class="line">            <span class="built_in">return</span> 0;</span><br><span class="line">        &#125;</span><br><span class="line">        long long ret = 0;</span><br><span class="line">        <span class="keyword">if</span>(root -&gt; val == targetSum)&#123;</span><br><span class="line">            ret++;</span><br><span class="line">        &#125;</span><br><span class="line">        ret += rootSum(root -&gt; left,targetSum - root -&gt; val);</span><br><span class="line">        ret += rootSum(root -&gt; right,targetSum - root -&gt; val);</span><br><span class="line">        <span class="built_in">return</span> ret;</span><br><span class="line">    &#125;</span><br><span class="line">    int pathSum(TreeNode* root, long long targetSum)&#123;</span><br><span class="line">        <span class="keyword">if</span>(root == nullptr)&#123;</span><br><span class="line">            <span class="built_in">return</span> 0;</span><br><span class="line">        &#125;</span><br><span class="line">        long long ret = rootSum(root,targetSum);//以root为根节点的路径数</span><br><span class="line">        ret += pathSum(root -&gt; left,targetSum);//以root-&gt;left为根节点的路径数</span><br><span class="line">        ret += pathSum(root -&gt; right,targetSum);//以root-&gt;right为根节点的路径数</span><br><span class="line">        <span class="built_in">return</span> ret;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/数据结构//" class="article-tag-list-link color5">数据结构</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/05/11/Note-2%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%A0%91/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Note-1：背包问题" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/05/11/Note-1%EF%BC%9A%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/">Note-1：背包问题</a>
-    </h1>
-  
-
-        
-        <a href="/2022/05/11/Note-1%EF%BC%9A%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/" class="archive-article-date">
-  	<time datetime="2022-05-11T12:26:29.881Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-11</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>本篇整理一下背包问题。背包是动态规划里的一个分支，不管套了什么外壳，本质还是从一个状态递推到另一个状态。</p>
-<h1 id="1-0-x2F-1背包"><a href="#1-0-x2F-1背包" class="headerlink" title="1. 0&#x2F;1背包"></a>1. 0&#x2F;1背包</h1><p>背景：给定背包容量W和一些物品的容量vector<int> weight和价值vector<int> value，每件物品只能放一次，求怎样装可以使背包价值最大。<br>每件物品可以选也可以不选，理论上可以回溯寻找所有情况，但时间复杂度将是指数级的…<br>而注意到状态之间存在一定的推导关系，因此可以用动态规划解决。</p>
-<h2 id="1-1-二维dp数组"><a href="#1-1-二维dp数组" class="headerlink" title="1.1 二维dp数组"></a>1.1 二维dp数组</h2><p>设一个二维dp数组，dp[i][j]表示从下标为0-i的物品中选择放入容量为j的背包可以获得的最大价值。</p>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/算法//" class="article-tag-list-link color3">算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/05/11/Note-1%EF%BC%9A%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-第一篇笔记" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/05/11/%E7%AC%AC%E4%B8%80%E7%AF%87%E7%AC%94%E8%AE%B0/">此博客的搭建过程及遇到的问题</a>
-    </h1>
-  
-
-        
-        <a href="/2022/05/11/%E7%AC%AC%E4%B8%80%E7%AF%87%E7%AC%94%E8%AE%B0/" class="archive-article-date">
-  	<time datetime="2022-05-11T03:13:20.532Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-11</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>主要参考：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/chenlove/p/15058170.html">https://www.cnblogs.com/chenlove/p/15058170.html</a></p>
-<h1 id="1-环境配置"><a href="#1-环境配置" class="headerlink" title="1. 环境配置"></a>1. 环境配置</h1><h2 id="1-1-安装git"><a href="#1-1-安装git" class="headerlink" title="1.1 安装git"></a>1.1 安装git</h2><p>官网下载，命令行输入git –version检测是否安装成功即可。</p>
-<h2 id="1-2-安装node-js"><a href="#1-2-安装node-js" class="headerlink" title="1.2 安装node.js"></a>1.2 安装node.js</h2><p>node.js是一个javaScript的运行环境。同上，输入node -v检测。【这里容易出现安装不完全的情况】</p>
-<h2 id="1-3-安装hexo"><a href="#1-3-安装hexo" class="headerlink" title="1.3 安装hexo"></a>1.3 安装hexo</h2>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/经验//" class="article-tag-list-link color3">经验</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/05/11/%E7%AC%AC%E4%B8%80%E7%AF%87%E7%AC%94%E8%AE%B0/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
 
 
@@ -951,8 +337,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
